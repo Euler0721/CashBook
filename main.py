@@ -1,4 +1,5 @@
 import tkinter as tk
+from datetime import datetime
 from tkinter import messagebox, font
 from modules.record import add_record, load_records, save_records, delete_record
 from modules.view import get_recent_records
@@ -120,6 +121,19 @@ class PersonalAccountingApp:
         is_recurring = self.is_recurring_var.get()
         frequency = self.get_frequency() if is_recurring else None
 
+        
+        
+        def is_valid_date(date_str):
+            try:
+                datetime.strptime(date_str, '%Y-%m-%d')
+                return True
+            except ValueError:
+                return False
+
+        if not is_valid_date(date):
+            messagebox.showinfo('请正确输入日期！')
+            return
+        
         add_record(date, amount, category, note, is_recurring, frequency)
 
         self.date_entry.delete(0, tk.END)
